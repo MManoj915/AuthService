@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.pbmswitch.com:9090/PayerIntegrationWS?xsd=2" filename="PayerIntegrationWS.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.pbmswitch.com:9090/PayerIntegrationWS?xsd=3" filename="PayerIntegrationWS0.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://www.pbmswitch.com:9090/PayerIntegrationWS?wsdl" filename="PayerIntegrationWSService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.pbmswitch.com:9090/PayerIntegrationWS?xsd=1" filename="PayerIntegrationWS1.xsd" />
+  </Results>
+</DiscoveryClientResultsFile>
