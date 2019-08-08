@@ -20,6 +20,7 @@ using System.Net;
 using System.Xml;
 using PBMAuthorizationService;
 using PBMAuthorizationService.PBMSwitchReference;
+using PBMAuthorizationService.DHPOReference;
 
 namespace PBMAuthorizationService
 {
@@ -45,7 +46,48 @@ namespace PBMAuthorizationService
             this._thread = new Thread(new ThreadStart(this.Execute));
             this._thread.Start();
         }
-         
+
+        private void Execute1()
+        {
+
+            List<string> Errors = new List<string>();
+
+            bool doprocess = false;
+            try
+            {
+                while (!doprocess)
+                {
+                    List<AuthBatchID> BatchList = _db.Query<AuthBatchID>(" Select * from IM_AUTHBATCH").ToList();
+                    PBMAuthorizationService.PBMSwitchReference.pbmPriorAuthorization[] files;
+                    for (int i = 0; i < BatchList.Count; i++)
+                    {
+                        transactionBatch t = PBMsrv.findTransactionsByBatchID("A025", "8e260394-2211-4a4a-b14b-7f0824183f15", BatchList[i].BatchID, 2);
+                        priorAuthorizationBatch response = t.priorAuthorizationBatch;
+                        files = response.authorizationsList;
+                        foreach (pbmPriorAuthorization file in files)
+                        {
+                            try
+                            {
+                                string XMLData = GenaratePBMPriorAuthorizationXmlFile(file);
+                                string FileLocation = WriteAuthorizationPBMSubmissionFile(file.priorAuthorization.Header.TransactionDate, file.priorAuthorization.Header.ReceiverID, file.priorAuthorization.Header.ReceiverID, XMLData); //Create the downloaded file in the file system
+                                WritePriorAuthorizationRequestFilesLogToDB(response.batchID, file, 1, 1, "", 3, FileLocation);// log file to DB
+
+                            }
+                            catch (Exception ex)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
+                    Thread.Sleep(ThreadTimeLimit);
+                }
+            }
+            catch (Exception EX)
+            {
+
+            }
+        }
 
         private void Execute()
         {
